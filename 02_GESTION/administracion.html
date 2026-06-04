@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5TIERRAS - Administración & Finanzas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        .chart-card {
+            background: var(--glass);
+            padding: 30px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 400px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .mini-stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .mini-stat h5 {
+            color: var(--primary);
+            font-size: 10px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .mini-stat .num {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .transaction-list {
+            margin-top: 40px;
+            background: var(--glass);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Volver al Portal</a>
+    <h1 class="brand">Dashboard Administrativo</h1>
+
+    <div class="dashboard-container">
+        <!-- Fila de Gráficos -->
+        <div class="chart-row" style="grid-column: 1 / -1; display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;">
+            <div class="chart-card">
+                <h3 style="margin-bottom:20px; color: var(--primary); font-size: 14px; text-transform: uppercase;">
+                    Tendencia de Ventas Mensuales</h3>
+                <div style="height: 300px;">
+                    <canvas id="salesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3 style="margin-bottom:20px; color: var(--primary); font-size: 14px; text-transform: uppercase;">
+                    Distribución de Inventario</h3>
+                <div style="height: 300px;">
+                    <canvas id="inventoryPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fila de Estadísticas y KPIs -->
+        <div class="chart-card">
+            <h3 style="margin-bottom:20px; color: var(--primary); font-size: 14px; text-transform: uppercase;">Métricas
+                de Proyectos</h3>
+            <div class="status-grid">
+                <div class="mini-stat">
+                    <h5>Vendidas</h5>
+                    <div class="num">85</div>
+                </div>
+                <div class="mini-stat">
+                    <h5>Reservadas</h5>
+                    <div class="num">13</div>
+                </div>
+                <div class="mini-stat">
+                    <h5>Bloqueadas</h5>
+                    <div class="num">4</div>
+                </div>
+                <div class="mini-stat">
+                    <h5>Disponibles</h5>
+                    <div class="num">138</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h3 style="margin-bottom:20px; color: var(--primary); font-size: 14px; text-transform: uppercase;">
+                Proyección Financiera</h3>
+            <div style="text-align: center; padding: 20px 0;">
+                <div class="num" style="font-size: 36px; color: var(--primary); font-weight: 800;">$480M</div>
+                <p style="font-size:12px; opacity:0.6; margin-top:10px;">Cobranza proyectada (60 días)</p>
+                <div
+                    style="margin-top:20px; width:100%; height:8px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden;">
+                    <div style="width: 65%; height:100%; background: var(--primary);"></div>
+                </div>
+                <p style="font-size:11px; margin-top:10px; opacity:0.8;">65% de meta trimestral alcanzada</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="transaction-list">
+        <h3 style="margin-bottom:5px; color: var(--primary); font-size: 14px; text-transform: uppercase;">Últimos
+            Movimientos Administrativos</h3>
+        <p style="font-size: 12px; opacity: 0.6; margin-bottom: 20px;">Gestión de contratos, promesas y escrituración
+            legal</p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="min-width: 200px;">Cliente</th>
+                        <th style="min-width: 150px;">Proyecto</th>
+                        <th style="min-width: 80px;">Lote</th>
+                        <th style="min-width: 150px;">Monto Total</th>
+                        <th style="min-width: 150px;">Estado Documental</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ana Maria Silva</td>
+                        <td>Las Brisas</td>
+                        <td>15</td>
+                        <td>$32,000,000</td>
+                        <td><span class="tag tag-escritura">ESCRITURADO</span></td>
+                    </tr>
+                    <tr>
+                        <td>Carlos Mendez</td>
+                        <td>El Copihue</td>
+                        <td>42</td>
+                        <td>$35,000,000</td>
+                        <td><span class="tag tag-promesa">EN PROMESA</span></td>
+                    </tr>
+                    <tr>
+                        <td>Julia Valdés</td>
+                        <td>Los Encinos</td>
+                        <td>08</td>
+                        <td>$29,500,000</td>
+                        <td><span class="tag tag-promesa">RESERVA ACTIVA</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Estilo Global de Charts
+        Chart.defaults.color = 'rgba(255, 255, 255, 0.7)';
+        Chart.defaults.font.family = 'Inter';
+
+        // Gráfico de Líneas (Ventas)
+        const ctxSales = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctxSales, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Ventas Netas',
+                    data: [12, 19, 15, 25, 22, 34],
+                    borderColor: '#ff4500',
+                    backgroundColor: 'rgba(255, 69, 0, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ff4500',
+                    pointRadius: 4,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { font: { size: 10 } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 10 } }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Pie (Inventario)
+        const ctxInv = document.getElementById('inventoryPieChart').getContext('2d');
+        new Chart(ctxInv, {
+            type: 'doughnut',
+            data: {
+                labels: ['Disponibles', 'Vendidas', 'Reservadas', 'Bloqueadas'],
+                datasets: [{
+                    data: [138, 85, 13, 4],
+                    backgroundColor: [
+                        '#2ecc71', // Disponible
+                        '#e74c3c', // Vendida
+                        '#f1c40f', // Reservada
+                        'rgba(255,255,255,0.2)' // Bloqueada
+                    ],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { boxWidth: 12, font: { size: 11 } }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    </script>
+</body>
+
+</html>

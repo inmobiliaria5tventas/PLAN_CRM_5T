@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5TIERRAS - Módulo Gerencial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .brand {
+                font-size: 18px;
+            }
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-card h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .section-header {
+            margin-top: 50px;
+            color: var(--primary);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-approve {
+            background: var(--primary);
+            color: var(--dark);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .alert-low {
+            color: #ff4757;
+            font-weight: 800;
+            background: rgba(255, 71, 87, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Volver al Portal</a>
+
+    <h1 class="brand">Control Maestro Gerencial</h1>
+
+    <div class="dashboard-grid">
+        <div class="stat-card">
+            <h4>Ventas Acumuladas</h4>
+            <div class="value">$1,240,000,000</div>
+            <p style="color: var(--accent); margin-top: 10px; font-size: 12px;"><i class="fa-solid fa-arrow-up"></i>
+                +12.5% este mes</p>
+        </div>
+        <div class="stat-card">
+            <h4>Disponibilidad GIS</h4>
+            <div class="value">142 / 240</div>
+            <div
+                style="margin-top:15px; height:6px; background:rgba(255,255,255,0.05); border-radius:10px; overflow:hidden;">
+                <div style="width: 59%; height:100%; background: var(--primary);"></div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <h4>Validaciones Pendientes</h4>
+            <div class="value">05</div>
+            <p style="opacity: 0.6; margin-top: 10px; font-size: 12px;">Requieren firma comercial</p>
+        </div>
+    </div>
+
+    <div class="section-header"><i class="fa-solid fa-tags"></i> Control de Precios y Márgenes</div>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Proyecto</th>
+                    <th>Lote</th>
+                    <th>Precio Lista</th>
+                    <th>Margen</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hacienda El Copihue</td>
+                    <td>14</td>
+                    <td>$35,000,000</td>
+                    <td>18%</td>
+                    <td><span class="tag tag-escritura">OPTIMO</span></td>
+                    <td><button class="btn-approve">Editar</button></td>
+                </tr>
+                <tr>
+                    <td>Las Brisas</td>
+                    <td>22</td>
+                    <td>$28,500,000</td>
+                    <td><span class="alert-low">8% <i class="fa-solid fa-triangle-exclamation"></i></span></td>
+                    <td><span class="tag tag-promesa">REVISAR</span></td>
+                    <td><button class="btn-approve">Editar</button></td>
+                </tr>
+                <tr>
+                    <td>Hacienda Los Encinos</td>
+                    <td>05</td>
+                    <td>$42,000,000</td>
+                    <td>22%</td>
+                    <td><span class="tag tag-escritura">PREMIUM</span></td>
+                    <td><button class="btn-approve">Editar</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section-header"><i class="fa-solid fa-signature"></i> Cola de Aprobación de Reservas</div>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Vendedor</th>
+                    <th>Cliente</th>
+                    <th>Proyecto</th>
+                    <th>Oferta</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ricardo Soto</td>
+                    <td>Juan Pérez</td>
+                    <td>Los Naranjos #122</td>
+                    <td>$25,500,000</td>
+                    <td><button class="btn-approve" onclick="alert('Reserva Aprobada Corectamente')">Aprobar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

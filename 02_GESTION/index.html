@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <title>5 TIERRAS — Consola de Control de GIS & CRM</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Estilos de la Consola -->
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+    <div class="app-layout">
+        
+        <!-- ═══ SIDEBAR LATERAL ═══ -->
+        <aside class="sidebar-layout">
+            <div class="sidebar-brand">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                    <a href="../index.html" class="back-home-btn" title="Volver a Portada Principal">
+                        <i class="fa-solid fa-chevron-left"></i> Portada
+                    </a>
+                </div>
+                <div class="logo-flex">
+                    <img src="../04_RECURSOS/Logos/El Copihue.png" alt="5T Logo" class="brand-logo-img">
+                    <div>
+                        <h1 class="brand-title">5 TIERRAS</h1>
+                        <p class="brand-subtitle">CRM & GIS Portal</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selector de Rol para Demo -->
+            <div class="sidebar-role-panel">
+                <span class="panel-label">Rol del Usuario</span>
+                <select id="role-selector" class="role-selector-dropdown" onchange="CRM_APP.switchRole(this.value)">
+                    <option value="gerente">Gerente General</option>
+                    <option value="vendedor">Vendedor / Comercial</option>
+                    <option value="administrador">Administración / Legal</option>
+                </select>
+            </div>
+
+            <!-- Menú de Navegación -->
+            <nav class="sidebar-menu">
+                <button class="menu-item active" data-tab="dashboard" onclick="CRM_APP.switchTab('dashboard')">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </button>
+                <button class="menu-item" data-tab="mapa" onclick="CRM_APP.switchTab('mapa')">
+                    <i class="fa-solid fa-map-location-dot"></i> Visualizador GIS
+                </button>
+                <button class="menu-item" data-tab="aprobaciones" onclick="CRM_APP.switchTab('aprobaciones')">
+                    <i class="fa-solid fa-stamp"></i> Aprobaciones
+                </button>
+                <button class="menu-item" data-tab="mesa-documental" onclick="CRM_APP.switchTab('mesa-documental')">
+                    <i class="fa-solid fa-file-contract"></i> Mesa Documental
+                </button>
+                <button class="menu-item" data-tab="inventario" onclick="CRM_APP.switchTab('inventario')">
+                    <i class="fa-solid fa-list-check"></i> Inventario de Lotes
+                </button>
+                <button class="menu-item" data-tab="auditoria" onclick="CRM_APP.switchTab('auditoria')">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Auditoría
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p style="font-size: 10px; color: var(--text-dim); text-align: center;">5 Tierras Ecosistema &copy; 2026</p>
+            </div>
+        </aside>
+
+        <!-- ═══ ÁREA PRINCIPAL DE CONTENIDO ═══ -->
+        <main class="main-content-area">
+            
+            <!-- HEADER DE APLICACIÓN -->
+            <header class="app-top-header">
+                <div class="header-breadcrumbs">
+                    <span id="breadcrumb-parent">Consola</span>
+                    <span class="separator">/</span>
+                    <span id="breadcrumb-active" class="breadcrumb-active">Dashboard</span>
+                </div>
+                
+                <div class="user-profile-widget">
+                    <div class="profile-info-text">
+                        <span id="header-user-name" class="profile-name">Gerente 5 Tierras</span>
+                        <span id="header-user-role" class="profile-role">Gerente General</span>
+                    </div>
+                    <div class="profile-avatar">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENEDOR DE PESTAÑAS (SPA) -->
+            <div class="tab-panel-container">
+                
+                <!-- 1. PESTAÑA: DASHBOARD GERENCIAL -->
+                <div class="tab-content-panel active" id="panel-dashboard">
+                    <!-- Fila KPIs -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Ingreso Total Proyectado</span>
+                                <span id="kpi-total-proyectado" class="kpi-value">$ 0</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon" style="background: rgba(52, 152, 219, 0.1); color: var(--accent-blue);"><i class="fa-solid fa-file-signature"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Dinero en Promesas</span>
+                                <span id="kpi-monto-promesa" class="kpi-value">$ 0</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon" style="background: rgba(46, 204, 113, 0.1); color: var(--accent-green);"><i class="fa-solid fa-vault"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Caja Recaudada (Escriturada)</span>
+                                <span id="kpi-caja-recaudada" class="kpi-value">$ 0</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon" style="background: rgba(231, 76, 60, 0.1); color: var(--accent-red);"><i class="fa-solid fa-house-chimney-user"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Total Lotes Vendidos</span>
+                                <span id="kpi-lotes-vendidos" class="kpi-value">0 / 0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fila Gráficos -->
+                    <div class="dashboard-charts-row">
+                        <div class="chart-card-unified">
+                            <h3 class="chart-title">Composición de Inventario</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-composition"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card-unified">
+                            <h3 class="chart-title">Estado de Lotes por Proyecto</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-projects"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transacciones Recientes -->
+                    <div class="recent-transactions-card">
+                        <h3 class="card-title">Historial de Transacciones</h3>
+                        <p class="card-subtitle">Últimos movimientos registrados en el ecosistema</p>
+                        <div class="table-container-responsive">
+                            <table class="premium-table-unified">
+                                <thead>
+                                    <tr>
+                                        <th>ID Transacción</th>
+                                        <th>Lote / Proyecto</th>
+                                        <th>Cliente</th>
+                                        <th>Vendedor</th>
+                                        <th>Monto</th>
+                                        <th>Estado Legal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-transactions-tbody">
+                                    <!-- Dinámico por JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. PESTAÑA: VISUALIZADOR GIS (MAPA + ACCIÓN) -->
+                <div class="tab-content-panel" id="panel-mapa">
+                    <div class="map-controls-header">
+                        <div class="form-group-inline">
+                            <label><i class="fa-solid fa-tree"></i> Seleccionar Loteo</label>
+                            <select id="map-project-select" class="project-selector-dropdown" onchange="CRM_APP.loadProjectOnMap(this.value)">
+                                <option value="El Copihue">Hacienda El Copihue</option>
+                                <option value="Las Brisas">Las Brisas</option>
+                                <option value="Los Encinos">Hacienda Los Encinos</option>
+                                <option value="Los Naranjos">Los Naranjos</option>
+                            </select>
+                        </div>
+                        <div class="sync-status-indicator">
+                            <span class="sync-dot online"></span>
+                            <span class="sync-text">Base Datos Conectada</span>
+                        </div>
+                    </div>
+
+                    <div class="gis-layout-grid">
+                        <!-- Mapa Leaflet -->
+                        <div class="map-view-container">
+                            <div id="console-map" class="map-console-element"></div>
+                        </div>
+
+                        <!-- Detalle y Formulario de Acción Lateral -->
+                        <div class="map-details-sidebar">
+                            <div class="empty-selection-placeholder" id="map-no-selection">
+                                <i class="fa-solid fa-map-pin animate-bounce-custom"></i>
+                                <h3>Selecciona un Lote</h3>
+                                <p>Haz clic en cualquier parcela del mapa satelital para interactuar con ella.</p>
+                            </div>
+
+                            <div class="lote-details-card" id="map-lote-details-box" style="display: none;">
+                                <div class="lote-card-header">
+                                    <div>
+                                        <h2 id="map-lote-id" class="lote-card-title">Lote --</h2>
+                                        <span id="map-lote-project" class="lote-card-project">--</span>
+                                    </div>
+                                    <span id="map-lote-status-badge" class="status-tag-map">--</span>
+                                </div>
+
+                                <div class="lote-specs-grid">
+                                    <div class="spec-item">
+                                        <span class="spec-label">Superficie</span>
+                                        <span id="map-lote-area" class="spec-value">--</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <span class="spec-label">Precio Lista</span>
+                                        <span id="map-lote-price" class="spec-value">--</span>
+                                    </div>
+                                </div>
+
+                                <div class="lote-history-meta">
+                                    <span id="map-lote-history-user">Modificado por: --</span>
+                                    <span id="map-lote-history-date">--</span>
+                                </div>
+
+                                <div class="comment-display-area" id="map-lote-comment-box" style="display: none;">
+                                    <span class="comment-label">Comentario</span>
+                                    <p id="map-lote-comment" class="comment-text">--</p>
+                                </div>
+
+                                <hr class="divider-line">
+
+                                <!-- Formulario de Acción Dinámico -->
+                                <div id="map-lote-action-form">
+                                    <!-- Se inyecta dinámicamente con JS según el estado del lote y rol -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. PESTAÑA: APROBACIONES -->
+                <div class="tab-content-panel" id="panel-aprobaciones">
+                    <div class="recent-transactions-card">
+                        <h3 class="card-title">Reservas por Aprobar</h3>
+                        <p class="card-subtitle">Solicitudes enviadas por el equipo de ventas listas para revisión gerencial</p>
+                        <div class="table-container-responsive">
+                            <table class="premium-table-unified">
+                                <thead>
+                                    <tr>
+                                        <th>Lote / Proyecto</th>
+                                        <th>Cliente / RUT</th>
+                                        <th>Vendedor</th>
+                                        <th>Monto Reserva</th>
+                                        <th>Precio Ofertado</th>
+                                        <th style="text-align: right;">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-aprobaciones-tbody">
+                                    <!-- Dinámico por JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. PESTAÑA: MESA DOCUMENTAL -->
+                <div class="tab-content-panel" id="panel-mesa-documental">
+                    <div class="mesa-documental-split">
+                        <!-- Columna 1: Promesas por Escriturar -->
+                        <div class="recent-transactions-card card-half">
+                            <h3 class="card-title">Lotes Promesados</h3>
+                            <p class="card-subtitle">Lotes listos para firmar escritura pública de compraventa</p>
+                            <div class="table-container-responsive">
+                                <table class="premium-table-unified">
+                                    <thead>
+                                        <tr>
+                                            <th>Lote / Proyecto</th>
+                                            <th>Cliente</th>
+                                            <th>Notaría</th>
+                                            <th style="text-align: right;">Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-mesa-promesas-tbody">
+                                        <!-- Dinámico por JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Columna 2: Cierres Totales -->
+                        <div class="recent-transactions-card card-half">
+                            <h3 class="card-title">Escrituras Recientes</h3>
+                            <p class="card-subtitle">Últimas escrituras inscritas en el Conservador</p>
+                            <div class="table-container-responsive">
+                                <table class="premium-table-unified">
+                                    <thead>
+                                        <tr>
+                                            <th>Lote / Proyecto</th>
+                                            <th>Fojas</th>
+                                            <th>Fecha</th>
+                                            <th>Notaría</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-mesa-escrituras-tbody">
+                                        <!-- Dinámico por JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. PESTAÑA: INVENTARIO DE LOTES -->
+                <div class="tab-content-panel" id="panel-inventario">
+                    <div class="recent-transactions-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                            <div>
+                                <h3 class="card-title">Inventario General de Lotes</h3>
+                                <p class="card-subtitle">Lista de control de todas las parcelas del ecosistema</p>
+                            </div>
+                            <div class="form-group-inline">
+                                <label>Filtrar Proyecto</label>
+                                <select id="inventario-filter-project" class="project-selector-dropdown" onchange="CRM_APP.refreshAll()">
+                                    <option value="all">Todos los Proyectos</option>
+                                    <option value="El Copihue">Hacienda El Copihue</option>
+                                    <option value="Las Brisas">Las Brisas</option>
+                                    <option value="Los Encinos">Hacienda Los Encinos</option>
+                                    <option value="Los Naranjos">Los Naranjos</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-container-responsive">
+                            <table class="premium-table-unified">
+                                <thead>
+                                    <tr>
+                                        <th>Lote</th>
+                                        <th>Proyecto</th>
+                                        <th>Superficie</th>
+                                        <th>Precio Lista</th>
+                                        <th>Precio Mínimo</th>
+                                        <th>Estado</th>
+                                        <th>Último Editor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-inventario-tbody">
+                                    <!-- Dinámico por JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. PESTAÑA: LOGS DE AUDITORÍA -->
+                <div class="tab-content-panel" id="panel-auditoria">
+                    <div class="recent-transactions-card">
+                        <h3 class="card-title">Registro de Auditoría</h3>
+                        <p class="card-subtitle">Registro cronológico de las acciones del personal y modificaciones de base de datos</p>
+                        <div class="table-container-responsive">
+                            <table class="premium-table-unified">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha / Hora</th>
+                                        <th>Usuario</th>
+                                        <th>Acción</th>
+                                        <th>Detalles</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="auditoria-table-tbody">
+                                    <!-- Dinámico por JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ═══ MODAL ADMIN DOCUMENTACIÓN (Firmas de Promesa/Escritura) ═══ -->
+    <div id="admin-doc-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="admin-doc-modal-title">🖋️ Registro Documental</h3>
+                <p id="admin-doc-modal-subtitle">Proyecto - Lote</p>
+            </div>
+            <div class="modal-body" id="admin-doc-modal-form-area">
+                <!-- Formulario dinámico por JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Módulos de Capas de Dibujo de Parcelas (Soportando CORS local) -->
+    <script src="../03_CORAZON/layers/copihue_master.js"></script>
+    <script src="../03_CORAZON/layers/brisas_master.js"></script>
+    <script src="../03_CORAZON/layers/encinos_master.js"></script>
+    <script src="../03_CORAZON/layers/naranjos_master.js"></script>
+
+    <!-- Config de Sincronización Básica del Ecosistema -->
+    <script src="../03_CORAZON/config.js"></script>
+    <script src="../03_CORAZON/sync.js"></script>
+
+    <!-- Motor base de datos local y lógica UI -->
+    <script src="js/crm_db.js"></script>
+    <script src="js/app_unified.js"></script>
+
+</body>
+
+</html>

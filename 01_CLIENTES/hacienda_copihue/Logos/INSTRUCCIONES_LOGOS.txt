@@ -1,0 +1,6 @@
+# Carpeta de Logos Oficiales
+Por favor, asegúrese de copiar los archivos de imagen aquí para que la aplicación cargue correctamente:
+1. El Copihue.png
+2. logo5t.png
+3. logo_inicial.jpg
+4. 5t.jfif (si lo usa como ícono de manifest)

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="../../../04_RECURSOS/5t.jfif">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="App Ventas">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0e1a">
+    <title>Los Naranjos — Gestión de Lotes</title>
+    <meta name="description"
+        content="App de gestión inmobiliaria para Los Naranjos. Control de lotes, estados y precios en tiempo real.">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- App Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+
+        <!-- ═══ LOADING SCREEN ═══ -->
+        <div class="loading-screen">
+            <img src="../../../04_RECURSOS/Logos/Los%20Naranjos.png" class="loading-screen__logo" style="width: 100px; height: auto; margin-bottom: 24px;">
+            <div class="loading-screen__text">Cargando Mapa</div>
+            <div class="loading-screen__bar">
+                <div class="loading-screen__bar-inner"></div>
+            </div>
+        </div>
+
+        <!-- ═══ TOP BAR (Standardized Premium) ═══ -->
+        <header class="app-header">
+            <div class="header-content">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <a href="../../../index.html" class="home-dot-btn" title="Inicio">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                    <div class="header-project-info">
+                        <div class="project-name-mini">Los Naranjos</div>
+                        <div id="sync-indicator" class="sync-dot" title="Estado de conexión"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ═══ MAP ═══ -->
+        <div id="map"></div>
+
+        <!-- ═══ FLOATING ACTION BUTTONS ═══ -->
+        <div class="fab-container" style="display: flex; flex-direction: column; gap: 12px;">
+            <button id="share-link-btn" class="fab fab--share" title="Compartir Proyecto" style="background: #6366f1; color: white; border: none; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);">
+                <i class="fa-solid fa-share-nodes"></i>
+            </button>
+            <button id="fab-locate" class="fab fab--locate" title="Mi ubicación">
+                <i class="fa-solid fa-location-arrow"></i>
+            </button>
+        </div>
+
+        <!-- ═══ STATS BAR ═══ -->
+        <div class="stats-bar">
+            <div class="total-badge"><span id="stats-total">0</span> LOTES TOTALES</div>
+            <div class="stats-inner">
+                <div class="progress-row">
+                    <div class="progress-icon icon--disp"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="progress-content">
+                        <div class="progress-header">
+                            <span class="progress-label">Disponibles</span>
+                            <span class="progress-val" id="stat-disponible">0</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="bar-disp" class="progress-fill fill--disp"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-row">
+                    <div class="progress-icon icon--res"><i class="fa-solid fa-clock"></i></div>
+                    <div class="progress-content">
+                        <div class="progress-header">
+                            <span class="progress-label">Reservadas</span>
+                            <span class="progress-val" id="stat-reservada">0</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="bar-res" class="progress-fill fill--res"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-row">
+                    <div class="progress-icon icon--vend"><i class="fa-solid fa-handshake"></i></div>
+                    <div class="progress-content">
+                        <div class="progress-header">
+                            <span class="progress-label">Vendidas</span>
+                            <span class="progress-val" id="stat-vendida">0</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="bar-vend" class="progress-fill fill--vend"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ BOTTOMSHEET OVERLAY ═══ -->
+        <div id="bottomsheet-overlay" class="bottomsheet-overlay"></div>
+
+        <!-- ═══ BOTTOMSHEET ═══ -->
+        <div id="bottomsheet" class="bottomsheet">
+            <div class="bottomsheet__handle"></div>
+
+            <!-- Header -->
+            <div class="bottomsheet__header">
+                <div>
+                    <div id="bs-lote-id" class="bottomsheet__lote-id">Lote --</div>
+                    <div id="bs-lote-area" class="bottomsheet__lote-area">--</div>
+                </div>
+                <button id="bs-close" class="bottomsheet__close">✕</button>
+            </div>
+
+            <!-- Current Status -->
+            <div class="bottomsheet__current-status bottomsheet__current-status--disponible" id="bs-current-status">
+            <span>●</span> Disponible
+        </div>
+
+
+
+            <!-- Quick-Tap Status Buttons -->
+            <div class="status-buttons">
+                <button class="status-btn status-btn--disponible" data-estado="Disponible">
+                    <span class="status-btn__icon">🟢</span>
+                    <span class="status-btn__label">Disponible</span>
+                </button>
+                <button class="status-btn status-btn--reservada" data-estado="Reservada">
+                    <span class="status-btn__icon">🟡</span>
+                    <span class="status-btn__label">Reservada</span>
+                </button>
+                <button class="status-btn status-btn--vendida" data-estado="Vendida">
+                    <span class="status-btn__icon">🔴</span>
+                    <span class="status-btn__label">Vendida</span>
+                </button>
+            </div>
+
+            <!-- Price Editor -->
+            <div id="price-row" class="price-row" style="cursor: pointer;">
+                <span class="price-row__icon">💰</span>
+                <div class="price-row__content">
+                    <div class="price-row__label">Precio</div>
+                    <div id="bs-price-value" class="price-row__value">$ --</div>
+                </div>
+                <span id="price-edit-icon" class="price-row__edit-icon">✏️</span>
+            </div>
+
+            <!-- Comment Section -->
+            <div id="comment-toggle-btn" class="comment-btn" style="display: flex; align-items: center; cursor: pointer;">
+                <span class="comment-btn__icon">💬</span>
+                <span id="comment-btn-preview" class="comment-btn__preview">Agregar comentario...</span>
+                <span id="comment-delete-btn" class="comment-btn__delete" title="Borrar comentario" style="cursor: pointer;">🗑️</span>
+                <i class="fa-solid fa-chevron-down comment-btn__chevron"></i>
+            </div>
+            <div id="comment-panel" class="comment-panel">
+                <textarea id="comment-textarea" class="comment-textarea" placeholder="Escribe un comentario breve sobre este lote..."></textarea>
+                <button id="comment-save-btn" class="comment-save-btn"><i class="fa-solid fa-floppy-disk"></i> Guardar comentario</button>
+            </div>
+
+            <div id="bs-vendida-info" class="vendida-info" style="display:none;">
+                <div class="vendida-info__icon">🔒</div>
+                <div class="vendida-info__title">Lote Vendido</div>
+                <div class="vendida-info__text">Este lote ya fue vendido y no puede ser editado.</div>
+            </div>
+
+            <!-- Last Modified -->
+            <div id="bs-last-modified" class="last-modified">
+                Última modificación: --
+            </div>
+        </div>
+
+        <!-- MODAL NUMPAD -->
+        <div id="numpad-overlay" class="numpad-overlay">
+            <div class="numpad-card">
+                <div class="numpad__header">
+                    <div class="numpad__title">💰 Editar Precio</div>
+                    <button id="numpad-cancel" class="numpad__cancel">✕</button>
+                </div>
+                <div class="numpad__display">
+                    <div class="numpad__display-label">Nuevo Precio</div>
+                    <div id="numpad-display-value" class="numpad__display-value">
+                        <span class="currency">$</span>0
+                    </div>
+                </div>
+                <div class="numpad__grid">
+                    <button class="numpad__key" data-key="1">1</button>
+                    <button class="numpad__key" data-key="2">2</button>
+                    <button class="numpad__key" data-key="3">3</button>
+                    <button class="numpad__key" data-key="4">4</button>
+                    <button class="numpad__key" data-key="5">5</button>
+                    <button class="numpad__key" data-key="6">6</button>
+                    <button class="numpad__key" data-key="7">7</button>
+                    <button class="numpad__key" data-key="8">8</button>
+                    <button class="numpad__key" data-key="9">9</button>
+                    <button class="numpad__key numpad__key--back" data-key="back"><i class="fa-solid fa-delete-left"></i></button>
+                    <button class="numpad__key" data-key="0">0</button>
+                    <button class="numpad__key numpad__key--confirm" data-key="confirm"><i class="fa-solid fa-check"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ TOAST CONTAINER ═══ -->
+        <div id="toast-container" class="toast-container"></div>
+
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Shared Sync Module -->
+    <script src="../../../03_CORAZON/config.js"></script>
+    <script src="../../../03_CORAZON/sync.js"></script>
+    <!-- Layers Data -->
+    <script src="../../../03_CORAZON/layers/naranjos_master.js"></script>
+    <!-- Data Module -->
+    <script src="data.js"></script>
+    <!-- App Logic -->
+    <script src="app.js"></script>
+</body>
+
+</html>
