@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inmobiliaria 5 Tierras | Ecosistema Digital</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0a0e1a;
+            --bg-card: rgba(18, 24, 42, 0.7);
+            --accent-primary: #6366f1;
+            --accent-secondary: #4f46e5;
+            --text-white: #ffffff;
+            --text-dim: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.05) 0%, transparent 40%);
+            color: var(--text-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Header ── */
+        header {
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(10,14,26,1), transparent);
+        }
+
+        .main-logo {
+            height: 80px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ── Main Container ── */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .sections-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        @media (min-width: 900px) {
+            .sections-grid { 
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ── Card Styling ── */
+        .hub-section {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+
+        .hub-section--admin {
+            order: -1; /* Forzar que administración aparezca primero en móvil */
+        }
+
+        .hub-section:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--accent-primary);
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* ── Project Grid (Clients) ── */
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .project-grid { grid-template-columns: 1fr 1fr; } /* Mantener 2 columnas en móvil para ahorrar espacio */
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 8px;
+        }
+
+        .project-card:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+        }
+
+        .project-card i {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+        }
+
+        .project-card:hover i { color: var(--accent-primary); }
+
+        .project-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* ── Management Action ── */
+        .admin-action {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .admin-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 18px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+            transition: 0.3s;
+            width: 100%;
+            justify-content: center;
+        }
+
+        @media (min-width: 600px) {
+            .admin-btn { width: auto; }
+        }
+
+        .admin-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(79, 70, 229, 0.5);
+        }
+
+        .admin-btn:active { transform: scale(0.98); }
+
+        .admin-note {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            max-width: 300px;
+        }
+
+        /* ── Footer ── */
+        footer {
+            margin-top: auto;
+            padding: 30px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        /* 📱 MOBILE FIXES */
+        @media (max-width: 600px) {
+            header { padding: 25px 20px 10px; }
+            .main-logo { height: 60px; margin-bottom: 10px; }
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 0.85rem; }
+            .container { padding: 10px 15px; }
+            .hub-section { padding: 20px; border-radius: 24px; }
+            .project-grid { gap: 10px; }
+            .project-card { padding: 12px; border-radius: 16px; }
+            .project-name { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="agroparcelas-5tierras.png" alt="Logo 5 Tierras" class="main-logo">
+        <h1>Ecosistema Digital</h1>
+        <p class="subtitle">Plataforma de Ventas y Gestión</p>
+    </header>
+
+    <div class="container">
+        <div class="sections-grid">
+            
+            <!-- SECCIÓN GESTIÓN (Ahora Primero) -->
+            <div class="hub-section hub-section--admin">
+                <div class="section-header">
+                    <div class="section-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="section-title">Administración Interna</div>
+                </div>
+                <div class="admin-action">
+                    <a href="02_GESTION/index.html" class="admin-btn">
+                        <i class="fa-solid fa-rocket"></i>
+                        Entrar al CRM
+                    </a>
+                    <p class="admin-note">Acceso restringido para el equipo de 5 Tierras.</p>
+                </div>
+            </div>
+
+            <!-- SECCIÓN CLIENTES -->
+            <div class="hub-section">
+                <div class="section-header">
+                    <div class="section-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="section-title">Vista de Clientes</div>
+                </div>
+                <div class="project-grid">
+                    <a href="01_CLIENTES/hacienda_brisas/app/index.html" class="project-card">
+                        <i class="fa-solid fa-wind"></i>
+                        <span class="project-name">Las Brisas</span>
+                    </a>
+                    <a href="01_CLIENTES/hacienda_copihue/app/index.html" class="project-card">
+                        <i class="fa-solid fa-flower"></i>
+                        <span class="project-name">El Copihue</span>
+                    </a>
+                    <a href="01_CLIENTES/hacienda_encinos/app/index.html" class="project-card">
+                        <i class="fa-solid fa-tree"></i>
+                        <span class="project-name">Los Encinos</span>
+                    </a>
+                    <a href="01_CLIENTES/hacienda_naranjos/app/index.html" class="project-card">
+                        <i class="fa-solid fa-leaf"></i>
+                        <span class="project-name">Los Naranjos</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Inmobiliaria 5 Tierras - Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
