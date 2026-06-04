@@ -1,0 +1,255 @@
+/* index.css - 5TIERRAS Premium Design System (Root Master Portal) */
+:root {
+    --primary: #f59e0b;
+    /* Amber Gold matching Sales App */
+    --secondary: #1e293b;
+    --dark: #0f172a;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --glass: rgba(15, 23, 42, 0.85);
+    --text: #f8fafc;
+    --text-dim: #94a3b8;
+    --accent: #22c55e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--dark);
+    color: var(--text);
+    overflow: hidden;
+}
+
+#map {
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 320px;
+    height: calc(100vh - 40px);
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    z-index: 1000;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand {
+    margin-bottom: 35px;
+}
+
+.brand span {
+    font-weight: 800;
+    color: var(--text);
+    text-transform: uppercase;
+}
+
+.brand-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--primary);
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+.brand-subtitle {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+.nav-links {
+    list-style: none;
+    flex-grow: 1;
+}
+
+.nav-item {
+    margin-bottom: 12px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-link:hover {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: var(--primary);
+    transform: translateX(5px);
+}
+
+.nav-link i {
+    margin-right: 15px;
+    font-size: 18px;
+    color: var(--primary);
+}
+
+.project-selector {
+    margin-top: 15px;
+}
+
+.project-card {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+.project-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255,255,255,0.1);
+}
+
+.project-card img {
+    border-radius: 50%;
+    background: white;
+    padding: 2px;
+}
+
+/* Marker Animation */
+@keyframes pulse {
+    0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(245, 158, 11, 0); }
+    100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+/* Custom Marker */
+.custom-div-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.marker-pin {
+    width: 25px;
+    height: 25px;
+    border-radius: 50% 50% 50% 0;
+    background: var(--primary);
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+    animation: pulse 2s infinite;
+    border: 2px solid #fff;
+}
+
+.marker-pin::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    margin: 4px 0 0 4px;
+    background: var(--dark);
+    position: absolute;
+    border-radius: 50%;
+}
+
+/* Popup Customization */
+.leaflet-popup-content-wrapper {
+    background: var(--glass);
+    backdrop-filter: blur(15px);
+    color: var(--text);
+    border-radius: 20px;
+    padding: 5px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.leaflet-popup-tip {
+    background: var(--glass);
+}
+
+.popup-content h3 {
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+
+.popup-content p {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+}
+
+.popup-content button {
+    background: var(--primary);
+    color: var(--dark);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 12px;
+    width: 100%;
+    transition: 0.2s;
+}
+
+.popup-content button:hover {
+    filter: brightness(1.2);
+    transform: scale(1.02);
+}
+
+/* Sidebar Toggle */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    background: var(--primary);
+    color: var(--dark);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: min(350px, 100%);
+        transform: translateX(-105%);
+        border-radius: 0 20px 20px 0;
+        top: 0; left: 0; height: 100vh;
+        margin: 0;
+    }
+    .sidebar.active { transform: translateX(0); }
+    .menu-toggle { display: flex; }
+}
